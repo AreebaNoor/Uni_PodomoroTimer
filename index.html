@@ -77,7 +77,6 @@
         newbtn.addEventListener("click", function() {
             clearInterval(x)
             timeEl.innerHTML = "<input id='inputTime' type='number' onkeydown='clickPress(event)' placeholder='00:00'></input>";
-            console.log(timeEl.innerHTML)
             let inputTime = document.getElementById("inputTime");
         })
         function clickPress(event) {
