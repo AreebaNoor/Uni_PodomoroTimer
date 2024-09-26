@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <title>Countdown</title>
+    <style>
+        @font-face {
+            font-family: Garges;
+            src: url("./Media/Garges.ttf")
+        }
+        #large_div {
+            display: flex;
+            flex-direction: column;
+        }
+        #time {
+            font-size: 55px;
+            text-align: center;
+            font-family: Garges;
+            letter-spacing: 3px;
+            margin: 0px;
+        }
+        #inputTime {
+            font-size: 55px;
+            font-family: Garges;
+            letter-spacing: 3px;
+            max-width: 150px;
+            border: none;
+            text-indent: 3px;
+        }
+        #inputTime::placeholder {
+            color: gray;
+        }
+        input:focus {
+            outline: none;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        #btn_div {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 5px;
+        }
+        .btn {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #ccc9d7;
+            border: none;
+            padding: 5px;
+            border-radius: 2.5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="large_div">
+        <p id="time"></p>
+        <div id="btn_div">
+            <button id="pausebtn" class="btn">Pause</button>
+            <button id="startbtn" class="btn">Start</button>
+            <button id="newbtn" class="btn">New timer</button>
+        </div>
+    </div>
+    
+    <script>
+        let timeEl = document.getElementById("time");
+        let pausebtn = document.getElementById("pausebtn");
+        let startbtn = document.getElementById("startbtn");
+        let newbtn = document.getElementById("newbtn");
+
+        globalThis.setTimer = 25*60*1000; // always millisec.
+        countdownOngoing();
+        clearInterval(x)
+        timeEl.innerHTML = "25:00"
+
+        newbtn.addEventListener("click", function() {
+            clearInterval(x)
+            timeEl.innerHTML = "<input id='inputTime' type='number' onkeydown='clickPress(event)' placeholder='00:00'></input>";
+            console.log(timeEl.innerHTML)
+            let inputTime = document.getElementById("inputTime");
+        })
+        function clickPress(event) {
+            if (event.keyCode == 13) {
+                setTimer = Number(inputTime.value)*60*1000;                
+                finishedtime = calc_finishedTime(setTimer);
+                timeEl.innerHTML = inputTime.value + ":00";
+            }
+        }
+
+        startbtn.addEventListener("click", function() {
+            globalThis.finishedtime = calc_finishedTime(setTimer);
+            countdownOngoing();
+        })
+
+        pausebtn.addEventListener("click", function() {
+            setTimer = timeleft
+            clearInterval(x)
+        })
+
+        function calc_finishedTime(setTimer) {
+            let starttime = new Date().getTime(); 
+            finishedtime = starttime + setTimer;
+            return finishedtime
+        }
+
+        function countdownOngoing() {
+            // update countdown every 1 sek
+            globalThis.x = setInterval(function() {
+                let currenttime = new Date().getTime();
+                globalThis.timeleft = finishedtime - currenttime;
+
+                let minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+
+                // display countdown
+                timeEl.innerHTML = minutes + ":" + seconds;
+
+                //check if done
+                if (timeleft < 0) {
+                    clearInterval(x);
+                    timeEl.innerHTML = "00:00"
+                    timeEl.style = "color: red";
+                }
+            })
+        }
+    
+
+
+    </script>
+</body>
+</html>
