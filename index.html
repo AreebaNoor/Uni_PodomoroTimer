@@ -59,7 +59,6 @@
         <div id="btn_div">
             <button id="pausebtn" class="btn">Pause</button>
             <button id="startbtn" class="btn">Start</button>
-            <button id="newbtn" class="btn">New timer</button>
         </div>
     </div>
     
@@ -69,43 +68,53 @@
         let startbtn = document.getElementById("startbtn");
         let newbtn = document.getElementById("newbtn");
 
-        globalThis.setTimer = 25*60*1000; // always millisec.
-        countdownOngoing();
-        clearInterval(x)
-        timeEl.innerHTML = "25:00"
+    // Podomoro cycle settings 
+        let podomoroTimer = [25, 5, 25, 5, 25, 5, 25, 30]
+        let pauseTimers = [0, 1, 0, 1, 0, 1, 0, 1]
+        globalThis.setTimer = 60*1000; // millisec remaining -> must multiply with the minutes set 
+        timeEl.innerHTML = podomoroTimer[0] + ":00";
+        let i = 0;
+    
+    //audio 
+        let pling = new Audio("./Media/fairydust.mp3");
 
-        newbtn.addEventListener("click", function() {
-            clearInterval(x)
-            timeEl.innerHTML = "<input id='inputTime' type='number' onkeydown='clickPress(event)' placeholder='00:00'></input>";
-            let inputTime = document.getElementById("inputTime");
-        })
-        function clickPress(event) {
-            if (event.keyCode == 13) {
-                setTimer = Number(inputTime.value)*60*1000;                
-                finishedtime = calc_finishedTime(setTimer);
-                timeEl.innerHTML = inputTime.value + ":00";
-            }
-        }
-
+    // When Start-button is clicked 
         startbtn.addEventListener("click", function() {
-            globalThis.finishedtime = calc_finishedTime(setTimer);
-            countdownOngoing();
+            timeEl.innerHTML = podomoroTimer[i] + ":00";
+            globalThis.finishedtime = calc_finishedTime(setTimer*podomoroTimer[i]);
+            countdownOngoing()
+            podomoroCycle();
         })
 
+    // when pausebutton is clicked 
         pausebtn.addEventListener("click", function() {
             setTimer = timeleft
-            clearInterval(x)
+            clearInterval(timer)
         })
 
+    // Calculate the finish-time 
         function calc_finishedTime(setTimer) {
             let starttime = new Date().getTime(); 
             finishedtime = starttime + setTimer;
             return finishedtime
         }
 
+        function podomoroCycle() {
+            setTimeout(function() {
+                i++
+                timeEl.innerHTML = podomoroTimer[i] + ":00";
+                globalThis.finishedtime = calc_finishedTime(setTimer*podomoroTimer[i]);
+                countdownOngoing()
+                if (i < podomoroTimer.length) {
+                    podomoroCycle();
+                }
+            }, podomoroTimer[i]*setTimer)
+        }
+
+    // When counting down in a timer 
         function countdownOngoing() {
             // update countdown every 1 sek
-            globalThis.x = setInterval(function() {
+            globalThis.timer = setInterval(function() {
                 let currenttime = new Date().getTime();
                 globalThis.timeleft = finishedtime - currenttime;
 
@@ -114,18 +123,21 @@
 
                 // display countdown
                 timeEl.innerHTML = minutes + ":" + seconds;
+                if (pauseTimers[i] == 1) {
+                    timeEl.style.color = "blue"
+                }
+
+                let callbackValue = finishedtime;
 
                 //check if done
                 if (timeleft < 0) {
-                    clearInterval(x);
+                    console.log("reached 0 sec")
+                    clearInterval(timer);
                     timeEl.innerHTML = "00:00"
-                    timeEl.style = "color: red";
+                    pling.play();
                 }
-            })
-        }
-    
-
-
+            }, 1000)
+        }   
     </script>
 </body>
 </html>
