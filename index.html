@@ -73,6 +73,7 @@
         let pauseTimers = [0, 1, 0, 1, 0, 1, 0, 1]
         globalThis.setTimer = 60*1000; // millisec remaining -> must multiply with the minutes set 
         timeEl.innerHTML = podomoroTimer[0] + ":00";
+        timeEl.style.color = "black"
         let i = 0;
     
     //audio 
@@ -81,6 +82,7 @@
     // When Start-button is clicked 
         startbtn.addEventListener("click", function() {
             timeEl.innerHTML = podomoroTimer[i] + ":00";
+            timeEl.style.color = "black"
             globalThis.finishedtime = calc_finishedTime(setTimer*podomoroTimer[i]);
             countdownOngoing()
             podomoroCycle();
@@ -103,6 +105,7 @@
             setTimeout(function() {
                 i++
                 timeEl.innerHTML = podomoroTimer[i] + ":00";
+                timeEl.style.color = "black"
                 globalThis.finishedtime = calc_finishedTime(setTimer*podomoroTimer[i]);
                 countdownOngoing()
                 if (i < podomoroTimer.length) {
