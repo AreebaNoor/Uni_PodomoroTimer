@@ -44,6 +44,11 @@
             justify-content: center;
             gap: 5px;
         }
+        #text {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            margin: 5px;
+            font-size: medium;
+        }
         .btn {
             font-family: 'Times New Roman', Times, serif;
             background-color: #ccc9d7;
@@ -56,6 +61,7 @@
 <body>
     <div id="large_div">
         <p id="time"></p>
+        <p id="text"></p>
         <div id="btn_div">
             <button id="pausebtn" class="btn">Pause</button>
             <button id="startbtn" class="btn">Start</button>
@@ -64,13 +70,13 @@
     
     <script>
         let timeEl = document.getElementById("time");
+        let textEl = document.getElementById("text");
         let pausebtn = document.getElementById("pausebtn");
         let startbtn = document.getElementById("startbtn");
-        let newbtn = document.getElementById("newbtn");
 
     // Podomoro cycle settings 
         let podomoroTimer = [25, 5, 25, 5, 25, 5, 25, 30]
-        let pauseTimers = [0, 1, 0, 1, 0, 1, 0, 1]
+        let pauseTimes = [0, 1, 0, 1, 0, 1, 0, 1]
         globalThis.setTimer = 60*1000; // millisec remaining -> must multiply with the minutes set 
         timeEl.innerHTML = podomoroTimer[0] + ":00";
         timeEl.style.color = "black"
@@ -83,6 +89,7 @@
         startbtn.addEventListener("click", function() {
             timeEl.innerHTML = podomoroTimer[i] + ":00";
             timeEl.style.color = "black"
+            textEl.innerHTML = "Work-time!"
             globalThis.finishedtime = calc_finishedTime(setTimer*podomoroTimer[i]);
             countdownOngoing()
             podomoroCycle();
@@ -106,6 +113,15 @@
                 i++
                 timeEl.innerHTML = podomoroTimer[i] + ":00";
                 timeEl.style.color = "black"
+                if (podomoroTimer[i] == 25) {
+                    textEl.innerHTML = "Work-time!"
+                }
+                else if (podomoroTimer[i] == 5) {
+                    textEl.innerHTML = "Short break"
+                }
+                else if (podomoroTimer[i] == 30) {
+                    textEl.innerHTML = "Long break"
+                }
                 globalThis.finishedtime = calc_finishedTime(setTimer*podomoroTimer[i]);
                 countdownOngoing()
                 if (i < podomoroTimer.length) {
@@ -126,7 +142,7 @@
 
                 // display countdown
                 timeEl.innerHTML = minutes + ":" + seconds;
-                if (pauseTimers[i] == 1) {
+                if (pauseTimes[i] == 1) {
                     timeEl.style.color = "blue"
                 }
 
