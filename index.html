@@ -43,11 +43,15 @@
             flex-direction: row;
             justify-content: center;
             gap: 5px;
+            margin: 5px;
+            margin-top: 10px;
         }
         #text {
             font-family: Georgia, 'Times New Roman', Times, serif;
-            margin: 5px;
-            font-size: medium;
+            font-size: small;
+            margin: 0px;
+            text-align: center;
+
         }
         .btn {
             font-family: 'Times New Roman', Times, serif;
@@ -80,6 +84,7 @@
         globalThis.setTimer = 60*1000; // millisec remaining -> must multiply with the minutes set 
         timeEl.innerHTML = podomoroTimer[0] + ":00";
         timeEl.style.color = "black"
+        textEl.innerHTML = "Start Podomoro"
         let i = 0;
     
     //audio 
